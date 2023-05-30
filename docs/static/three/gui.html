@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AxesHelper</title>
+    <title>GUI</title>
 </head>
 <style>
     body {
@@ -27,12 +27,16 @@
 <script type="module">
     import * as THREE from 'three'
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-    import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
 
-
-    // 场景
+    const gui = new GUI()
     const scene = new THREE.Scene()
-    // 相机
+    /**
+     * Creates a new PerspectiveCamera
+     * @param fov Camera frustum vertical field of view. Default `50`.
+     * @param aspect Camera frustum aspect ratio. Default `1`.
+     * @param near Camera frustum near plane. Default `0.1`.
+     * @param far Camera frustum far plane. Default `2000`.
+     */
     const camera = new THREE.PerspectiveCamera(
         75,
         window.innerWidth / window.innerHeight,
@@ -40,30 +44,44 @@
         1000
     )
 
-    const renderer = new THREE.WebGLRenderer()
+    const renderer = new THREE.WebGLRenderer({})
     renderer.setSize(window.innerWidth, window.innerHeight)
     document.body.appendChild(renderer.domElement)
-
+    /**
+     * 立方体 参数为 长宽高
+     */
     const geometry = new THREE.BoxGeometry(1, 1, 1)
+    /**
+     * 材质 参数有 颜色...
+     */
     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+    /**
+     * Mesh（网格）网格包含一个几何体以及作用在此几何体上的材质
+     */
     const cube = new THREE.Mesh(geometry, material)
+
+    gui.add(cube.position, 'x', 0, 10)
+    gui.add(cube.position, 'y', 0, 10)
+    gui.add(cube.position, 'z', 0, 10)
+
     scene.add(cube)
-    const controls = new OrbitControls(camera, renderer.domElement)
+    // 稍微向外移动摄像机
     camera.position.set(2, 2, 2)
-
-    controls.update()
-    const axesHelper = new THREE.AxesHelper(5);
-    scene.add(axesHelper);
+    const controls = new OrbitControls(camera, renderer.domElement)
+    controls.addEventListener('change', () => {
+        renderer.render(scene, camera)
+    })
     function animate() {
-        requestAnimationFrame(animate);
+        requestAnimationFrame(animate)
 
-        // cube.rotation.x += 0.01;
-        // cube.rotation.y += 0.01;
+        cube.rotation.x += 0.01
+        cube.rotation.y += 0.01
 
-        renderer.render(scene, camera);
+        renderer.render(scene, camera)
     }
 
-    animate();
+    animate()
+
 </script>
 
 </html>

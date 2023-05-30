@@ -89,7 +89,7 @@ const renderer = new THREE.WebGLRenderer() // 创建渲染器
 renderer.setSize(window.innerWidth, window.innerHeight) // 设置渲染器尺寸
 document.body.appendChild(renderer.domElement) // body 添加渲染器 DOM 元素
 
-renderer.render( scene, camera ) // 三要素结合，将 3D 对象渲染到浏览器
+renderer.render(scene, camera) // 三要素结合，将 3D 对象渲染到浏览器
 ```
 
 #### 动画渲染
@@ -111,5 +111,71 @@ animate()
 
 ### 预览
 
+[预览](https://webgl-examples.netlify.app/three/start.html)
+
 ![three-start.jpg](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6c8ffb0b8dbb447589b99b2dffb1c41b~tplv-k3u1fbpfcp-watermark.image?)
 
+## 实用插件
+
+### 轨道控制器（OrbitControls）
+
+在很多 3D 案例中通过鼠标旋转、缩放等功能，使用 `OrbitControls` 可以轻松实现
+
+> Orbit controls（轨道控制器）可以使得相机围绕目标进行轨道运动。
+
+```js
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+
+const controls = new OrbitControls(camera, renderer.domElement)
+// 手动修改相机参数后,调用controls.update()更新
+// camera.position.set( 0, 20, 100 );
+// controls.update();
+//  未使用requestAnimationFrame 进行每帧刷新时,可以监听 change 事件,进行刷新
+// controls.addEventListener('change',()=>{
+//   renderer.render(scene, camera)
+// })
+```
+
+[OrbitControls 预览](https://webgl-examples.netlify.app/three/orbit-controls.html)
+
+### 坐标轴(AxesHelper)
+
+> 用于简单模拟 3 个坐标轴的对象.红色（R）代表 X 轴. 绿色（G）代表 Y 轴. 蓝色（B）代表 Z 轴
+
+```js
+const axesHelper = new THREE.AxesHelper(150)
+scene.add(axesHelper)
+```
+
+[AxesHelper 预览](https://webgl-examples.netlify.app/three/axe-helper.html)
+
+### GUI.js
+
+[dat.gui github](https://github.com/dataarts/dat.gui)
+
+gui.js 可以很方便的创建调整参数的 UI,结合 three.js 查看效果，达到事半功倍的效果。
+
+```js
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
+
+const gui = new GUI()
+//...
+gui.add(cube.position, 'x', 0, 10)
+gui.add(cube.position, 'y', 0, 10)
+gui.add(cube.position, 'z', 0, 10)
+
+function animate() {
+    requestAnimationFrame(animate)
+
+
+    renderer.render(scene, camera)
+}
+
+animate()
+```
+
+[GUI 预览](https://webgl-examples.netlify.app/three/gui.html)
+
+## 最后
+
+本篇主要介绍了 three.js 三要素和一些实用插件，希望能带大家轻松入门 three.js，希望对大家有所帮助。🎉🎉🎉
