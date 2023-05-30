@@ -21,6 +21,10 @@ npm install three
 
 ## 三要素
 
+- 场景（Scene）
+- 相机（Camera）
+- 渲染器（Renderer）
+
 ### 场景（Scene）
 
 ```js
